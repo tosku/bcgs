@@ -13,6 +13,7 @@ module Lattice
     , Realization
     , Configuration
     , Energy
+    , Magnetization
     , getSpinSTM
     , flipSpinSTM
     ) where
@@ -39,7 +40,7 @@ edgeEnergySTM e real conf = do
   let (s,t) = e
   spinSource <- fmap (fromIntegral . spinToInt) (getSpinSTM s conf)
   spinTarget <- fmap (fromIntegral . spinToInt) (getSpinSTM t conf)
-  return $ - spinSource * spinTarget * real e
+  return $! - spinSource * spinTarget * real e
 
 edgeEnergy :: Edge -> Realization -> Configuration -> IO Energy
 edgeEnergy e real conf = atomically $ edgeEnergySTM e real conf
@@ -48,7 +49,7 @@ latticeEnergy :: [Edge] -> Realization -> Configuration -> IO Energy
 latticeEnergy edges real conf = do
   a <- mapM (\e -> edgeEnergy e real conf) edges
   let b = sum a
-  return b
+  return $! b
 
 type Magnetization = Int
 magnetizationSTM :: Configuration -> STM Magnetization

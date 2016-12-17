@@ -47,7 +47,7 @@ pbcNeighbor v l' d' r  | r == Forward =
 -- Grid function from vertex to a tuple giving forward and backward vertices with Toroidal Boundary Conditions (pbc)
 type Grid = L -> D -> Vertex -> [Edge]
 pbcGrid :: Grid -- function
-pbcGrid l d v = (\r d -> case r of Forward -> (v, pbcNeighbor v l d r)
+pbcGrid l d v = (\r d -> case r of Forward ->  (v, pbcNeighbor v l d r)
                                    Backward -> (pbcNeighbor v l d r , v)
   ) <$> [Forward,Backward] <*> [1 .. d]
 
